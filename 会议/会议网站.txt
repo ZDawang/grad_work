@@ -1,0 +1,80 @@
+
+https://conferencealerts.com/topic-listing.php?page=1&ipp=100&topic=Computing
+
+HPC China
+
+SBAC-PAD
+
+CSCC
+
+
+http://www.icacs.org/        6月5日截稿     6月20日出结果    7月27召开    中国北京     第二届
+
+http://www.iccia.org/        5月20截稿      6月10号出结果    7月28召开    香港         第三届
+
+http://www.ccet.org/         6月5日截稿     6月25出结果      8月18召开    北京         第一届
+
+http://www.cscc2018.net/     6月21日截稿    7月21日出结果    9月21召开    杭州         
+
+http://www.eeet.org/         6月15截稿      7月5出结果       9月19召开    天津         第一届
+
+
+
+HiPC 2018: International Conference on High Performance Computing
+http://hipc.org/ 
+截稿日期:
+2018-06-08
+通知日期:
+2018-09-07
+会议日期:
+2018-12-17
+会议地点:
+Bengaluru, India
+届数:
+25
+
+
+
+IPCCC 2018: International Performance Computing and Communications Conference
+http://www.ipccc.org/ 
+截稿日期:
+2018-07-20
+通知日期:
+2018-09-21
+会议日期:
+2018-11-17
+会议地点:
+Orlando, Florida, USA
+届数:
+37
+
+
+
+I-SPAN 2018: International Symposium on Pervasive Systems, Algorithms, and Networks
+网址：https://grid.chu.edu.tw/ispan2018/ 
+截稿日期: 2018-05-25
+通知日期: 2018-07-16
+会议日期: 2018-10-16
+会议地点: Yichang, China
+届数: 15
+投稿平台：edas
+
+
+CyberC 2018: International Conference on Network-based Distributed Computing and Knowledge Discovery
+网址：http://www.cyberc.org/ 
+截稿日期: 2018-05-30
+通知日期: 2018-07-30
+会议日期: 2018-10-18
+会议地点: Zhengzhou, China
+届数: 10
+投稿平台：edas
+
+
+SBAC-PAD 2018: International Symposium on Computer Architecture and High Performance Computing
+网址：http://avalon.ens-lyon.fr/sbac-pad/ 
+截稿日期: 2018-06-01
+通知日期: 2018-07-06
+会议日期: 2018-09-24
+会议地点: Lyon, France
+届数: 30
+投稿平台：easychair
