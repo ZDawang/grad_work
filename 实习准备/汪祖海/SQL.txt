@@ -1,0 +1,13 @@
+select distinct item_id from part1;
+--select store_code from item_store_feature where 1=1 limit 100;
+--create table store_part1 as select * from item_store_feature where store_code='1';
+--create table part1 as select thedate,item_id,qty_alipay_njhs from store_part1;
+--desc part1;
+--show tables;
+--select item_id,thedate from part1 group by item_id,thedate;
+--select count (distinct item_id) from item_feature;
+--create table employeer (empid bigint,deptid bigint,salary bigint);
+--insert into table part1 values(2015-10-10,1,0);
+--select thedate,item_id,count(1) as num from part1 group by thedate,item_id;
+insert into table part1 select 20161010,1,0 from part1 limit 1;
+--select thedate from part1 order by thedate;

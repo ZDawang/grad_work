@@ -1,0 +1,85 @@
+create table store_part1 as select item_id,store_code,thedate,qty_alipay_njhs from item_store_feature where store_code='1';
+create table store_part2 as select item_id,store_code,thedate,qty_alipay_njhs from item_store_feature where store_code='2';
+create table store_part3 as select item_id,store_code,thedate,qty_alipay_njhs from item_store_feature where store_code='3';
+create table store_part4 as select item_id,store_code,thedate,qty_alipay_njhs from item_store_feature where store_code='4';
+create table store_part5 as select item_id,store_code,thedate,qty_alipay_njhs from item_store_feature where store_code='5';
+create table store_part6 as select item_id,store_code,thedate,qty_alipay_njhs from item_store_feature where store_code='6';
+drop table part1;
+drop table part2;
+drop table part3;
+drop table part4;
+drop table part5;
+drop table part6;
+
+create table part1 as 
+     select item_id,store_code,sum(if(store_part1.thedate >=20151214 and store_part1.thedate<=20151227,store_part1.qty_alipay_njhs,0))as target 
+	   from store_part1
+	   group by item_id,store_code;
+create table part2 as 
+      select item_id,store_code,sum(if(store_part2.thedate >=20151214 and store_part2.thedate<=20151227,store_part2.qty_alipay_njhs,0))as target 
+	   from store_part2
+	   group by item_id,store_code;
+create table part3 as 
+      select item_id,store_code,sum(if(store_part3.thedate >=20151214 and store_part3.thedate<=20151227,store_part3.qty_alipay_njhs,0))as target 
+	   from store_part3
+	   group by item_id,store_code;
+create table part4 as 
+     select item_id,store_code,sum(if(store_part4.thedate >=20151214 and store_part4.thedate<=20151227,store_part4.qty_alipay_njhs,0))as target 
+	   from store_part4
+	   group by item_id,store_code;
+create table part5 as 
+      select item_id,store_code,sum(if(store_part5.thedate >=20151214 and store_part5.thedate<=20151227,store_part5.qty_alipay_njhs,0))as target 
+	   from store_part5
+	   group by item_id,store_code;
+create table part6 as 
+      select item_id,store_code,sum(if(store_part6.thedate >=20151214 and store_part6.thedate<=20151227,store_part6.qty_alipay_njhs,0))as target 
+	   from store_part6
+	   group by item_id,store_code;
+create table part_all as 
+  select item_id,sum(if(item_feature.thedate >=20151214 and item_feature.thedate<=20151227,item_feature.qty_alipay_njhs,0))as target 
+	 from item_feature
+	 group by item_id;
+
+alter table part_all add columns(store_code String);
+create table country_all as select item_id ,'all' as store_code, target from part_all;
+create table c_submit(item_id bigint,
+		       store_code String,
+			target Double);
+insert into table c_submit select item_id, store_code,target from country_all;
+insert into table c_submit select item_id, store_code,target from part1;
+
+insert into table part1 select item_id, store_code,target from part2;
+insert into table part1 select item_id, store_code,target from part3;
+insert into table part1 select item_id, store_code,target from part4;
+insert into table part1 select item_id, store_code,target from part5;
+insert into table part1 select item_id, store_code,target from part6;
+
+
+drop table if exists features_all_train;
+create table features_all_train as
+select item_id,
+     sum(pv_ipv) as i1,
+     sum(pv_uv) as i2,
+	 sum(cart_ipv) as i3,
+	 sum(cart_uv) as i4,
+	 sum(collect_uv) as i5,
+	 sum(num_gmv) as i6,
+	 sum(qty_gmv) as i7,
+	 sum(unum_gmv) as i8,
+	 sum(num_alipay) as i9,
+	 sum(qty_alipay) as i10,
+	 sum(unum_alipay) as i11,
+	 sum(ztc_pv_ipv) as i12,
+	 sum(tbk_pv_ipv) as i13,
+	 sum(ss_pv_ipv) as i14,
+	 sum(jhs_pv_ipv) as i15,
+	 sum(ztc_pv_uv) as i16,
+	 sum(tbk_pv_uv) as i17,
+	 sum(ss_pv_uv) as i18,
+	 sum(jhs_pv_uv) as i19,
+	 sum(num_alipay_njhs) as i20,
+	 sum(unum_alipay_njhs) as i21,
+	 sum(qty_alipay_njhs) as label
+from item_feature
+where thedate >= 20151130 and thedate <= 20151213  
+group by item_id;
