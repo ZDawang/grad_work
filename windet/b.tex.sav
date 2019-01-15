@@ -1,0 +1,59 @@
+
+\documentclass[11pt,UTF8]{ctexart}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage[ruled,linesnumbered,boxed]{algorithm2e}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}%空集符号
+
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+
+\begin{document}
+    \begin{algorithm}[H]
+     \caption{卷积运算函数实现}
+      \KwIn{卷积核参数、输入特征图地址、输出特征图地址、参数地址、下一层存储参数}
+      \KwOut{无}
+        初始化参数及配置片外存储功能单元\;
+        \For{$input_{depth}=0; input_{depth} \le input_{max\_depth};input_{depth}=input_{depth}+input_{para}$}
+        {
+            向片外存储发送输入特征图数据读请求\;
+            将数据读入输入缓存中\;
+            \While{not end of $T_j$}
+            {
+                compute Jaro($r_i,r_m$)($r_m\in T_j$)\;
+                \If{$(Jaro(r_i,r_m) \ge \theta_r)\wedge (Jaro(r_i,r_m)\ge r^{maxSim})$}
+                {
+                    replace $r^{maxSim}$ with $r_m$\;
+                }
+            }
+            $con(r_i)=con(r_i)\cup {r^{maxSim}}$\;
+        }
+        return $con(r_i)$\;
+    \end{algorithm}
+
+
+    \begin{algorithm}[H]
+     \caption{卷积运算函数}
+      \KwIn{卷积核参数}
+      \KwOut{运算结果}
+        $con(r_i)= \Phi$\;
+        \For{$j=1;j \le n;j \ne i$}
+        {
+            float $maxSim=0$\;
+            $r^{maxSim}=null$\;
+            \While{not end of $T_j$}
+            {
+                compute Jaro($r_i,r_m$)($r_m\in T_j$)\;
+                \If{$(Jaro(r_i,r_m) \ge \theta_r)\wedge (Jaro(r_i,r_m)\ge r^{maxSim})$}
+                {
+                    replace $r^{maxSim}$ with $r_m$\;
+                }
+            }
+            $con(r_i)=con(r_i)\cup {r^{maxSim}}$\;
+        }
+        return $con(r_i)$\;
+    \end{algorithm}
+\end{document}
+

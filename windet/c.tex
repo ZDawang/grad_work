@@ -1,0 +1,37 @@
+
+\documentclass[11pt,UTF8]{ctexart}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{algorithm2e}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}%空集符号
+
+\renewcommand{\algorithmcfname}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+
+\begin{document}
+\begin{algorithm}
+\caption{决策树学习基本算法}
+
+\KwIn{$r_i$ , $Backgrd(T_i)$=${T_1,T_2,\ldots,T_n}$ and similarity threshold $\theta_r$}
+\KwOut{$con(r_i)$}
+
+\For{$j=1;j \le n;j \ne i$}
+{
+ float $maxSim=0$\;
+}
+
+
+\While{not end of $T_j$}
+{
+ compute Jaro($r_i,r_m$)($r_m \in T_j$)\;
+}
+
+\If{$(Jaro(r_i,r_m) \ge \theta _r) \wedge ((Jaro(r_i,r_m) \ge r^{maxSim}) $}
+{
+   replace $r^maxSim$ with $r_m$\;
+}
+\end{algorithm}
+\end{document}

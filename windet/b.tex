@@ -1,0 +1,165 @@
+
+\documentclass[11pt,UTF8]{ctexart}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage[ruled,linesnumbered,boxed]{algorithm2e}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}%空集符号
+
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+
+\begin{document}
+    \begin{algorithm}[H]
+     \caption{卷积运算函数实现}
+      \KwIn{卷积运算参数、输入特征图地址、输出特征图地址、卷积核参数地址、下一层存储参数}
+      \KwOut{无}
+        初始化参数及配置片外存储功能单元\;
+        \For{$input_{depth}=0; input_{depth} \le input_{max\_depth};input_{depth}=input_{depth}+input_{para}$}
+        {
+            向片外存储功能单元发送读请求读取输入特征图数据\;
+            将数据读入输入缓存功能单元中\;
+            \For{$kernel_{depth}=0; kernel_{depth} \le kernel_{max\_depth};kernel_{depth}=kernel_{depth}+output_{para}$}
+            {
+                向片外存储功能单元发送读请求读取卷积核参数\;
+                将卷积核参数从片外存储功能单元读入内存中\;
+                \For{$kernel_{height}=0; kernel_{height} \le kernel_{max\_height};kernel_{height}=kernel_{height}+3$}
+                {
+                    \For{$kernel_{width}=0; kernel_{width} \le kernel_{max\_width};kernel_{width}=kernel_{width}+3$}
+                    {
+                        从内存中加载参数到卷积运算单元中\;
+                        \For{$h=0; h \le input_{max\_height}-kernel_{max\_height}+kernel_{height};h=h+stride$}
+                        {
+                            \For{$w=0; h \le input_{max\_width}-kernel_{max\_width}+kernel_{width};w=w+stride$}
+                            {
+                                 从输入缓存功能单元中使用旋转存储结构读取数据，若为偏置层则全读为1\;
+                                 将数据输入到卷积运算单元中计算\;
+                                 将计算结果写入输出缓存功能单元中，更新模式选择初始化或累加\;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        根据下一层存储参数将输出缓存中的计算结果写入片外存储中\;
+        return\;
+    \end{algorithm}
+
+
+
+
+
+
+
+    \begin{algorithm}[H]
+     \caption{池化运算函数实现}
+      \KwIn{池化运算参数、输入特征图地址、输出特征图地址、下一层存储参数}
+      \KwOut{无}
+        初始化参数及配置片外存储功能单元\;
+        \For{$input_{depth}=0; input_{depth} \le input_{max\_depth};input_{depth}=input_{depth}+input_{para}$}
+        {
+            向片外存储功能单元发送读请求读取输入特征图数据\;
+            将数据从片外存储功能单元读入输入缓存功能单元中\;
+            \For{$pool_{height}=0; pool_{height} \le pool_{max\_height};pool_{height}=pool_{height}+3$}
+            {
+                \For{$pool_{width}=0; pool_{width} \le pool_{max\_width};pool_{width}=pool_{width}+3$}
+                {
+                    \For{$h=0; h \le input_{max\_height}-pool_{max\_height}+pool_{height};h=h+stride$}
+                    {
+                        \For{$w=0; h \le input_{max\_width}-pool_{max\_width}+pool_{width};w=w+stride$}
+                        {
+                             从输入缓存功能单元中使用旋转存储结构读出数据\;
+                             将数据输入到池化运算单元中计算，根据参数选择最大化或者平均池化\;
+                             将计算结果写入输出缓存功能单元中，更新模式选择初始化或根据参数选择累加与最大化\;
+                        }
+                    }
+                }
+            }
+        }
+        根据下一层存储参数将输出缓存中的计算结果写入片外存储中\;
+        return\;
+    \end{algorithm}
+
+
+
+    \begin{algorithm}[H]
+     \caption{激活函数层函数实现}
+      \KwIn{激活函数层参数、输入特征图地址、输出特征图地址、下一层存储参数}
+      \KwOut{无}
+        初始化参数及配置片外存储功能单元\;
+        \For{$input_{depth}=0; input_{depth} \le input_{max\_depth};input_{depth}=input_{depth}+input_{para}$}
+        {
+            向片外存储功能单元发送读请求读取输入特征图数据\;
+            \For{$l=0; l \le input_{max\_length};l=l+fc_{para}$}
+            {
+                从片外存储功能单元中读出输入特征图数据\;
+                将输入特征图数据输入到激活函数运算单元中计算，根据参数选择激活函数\;
+                将计算结果写入输出缓存功能单元中，更新模式选择初始化\;
+            }
+        }
+        根据下一层存储参数将输出缓存中的计算结果写入片外存储中\;
+        return\;
+    \end{algorithm}
+    
+    
+    
+    \begin{algorithm}[H]
+     \caption{批量归一化层函数实现}
+      \KwIn{批量归一化层参数，输入特征图地址、输出特征图地址、参数地址、下一层存储参数}
+      \KwOut{无}
+        初始化参数及配置片外存储功能单元\;
+        向片外存储功能单元发送读请求读取参数\;
+        将参数从片外存储功能单元读入内存中\;
+        \For{$input_{depth}=0; input_{depth} \le input_{max\_depth};input_{depth}=input_{depth}+input_{para}$}
+        {
+            向片外存储功能单元发送读请求读取输入特征图数据\;
+            将数据从片外存储功能单元读入输入缓存功能单元中\;
+            \For{$l=0; l \le input_{max\_length};l=l+fc_{para}$}
+            {
+                从输入缓存功能单元中使用顺序存储结构读出数据\;
+                将数据输入到更新均值单元中
+            }
+            计算均值\;
+            \For{$l=0; l \le input_{max\_length};l=l+fc_{para}$}
+            {
+                从输入缓存功能单元中使用顺序存储结构读出数据\;
+                将数据输入到更新方差单元中
+            }
+            计算方差\;
+            \For{$l=0; l \le input_{max\_length};l=l+fc_{para}$}
+            {
+                从输入缓存功能单元中使用顺序存储结构读出数据\;
+                将数据输入到归一化与变换重构运算单元中进行计算\;
+                将计算结果写入输出缓存功能单元中，更新模式选择初始化\;
+            }
+        }
+        根据下一层存储参数将输出缓存中的计算结果写入片外存储中\;
+        return\;
+    \end{algorithm}
+
+
+    \begin{algorithm}[H]
+     \caption{全连接层函数实现}
+      \KwIn{全连接层运算参数、输入特征图地址、输出特征图地址、参数地址、下一层存储参数}
+      \KwOut{无}
+        初始化参数及配置片外存储功能单元\;
+        向片外存储功能单元发送读请求读取输入数据\;
+        将输入数据从片外存储功能单元读入输入缓存中\;
+        \For{$l=0; l \le input_{max\_length};l=l+1$}
+        {
+            从输入缓存功能单元中使用顺序存储结构读取数据\;
+            向片外存储功能单元发送读请求读取参数\;
+            \For{$d=0; d \le para_{max\_depth};d=d+fc_{para}$}
+            {
+                从片外存储功能单元中读出参数数据\;
+                将参数数据与输入数据输入到全连接层运算单元中计算\;
+                将计算结果写入输出缓存功能单元中，更新模式选择初始化或累加\;
+            }
+        }
+        根据下一层存储参数将输出缓存中的计算结果写入片外存储中\;
+        return\;
+    \end{algorithm}
+
+\end{document}
+
